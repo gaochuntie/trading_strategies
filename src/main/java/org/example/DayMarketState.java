@@ -11,6 +11,8 @@ public class DayMarketState {
     public int bchain_index = -1;
     DayMarketState next = null;
     DayMarketState previous = null;
+    public static double gold_handling_fee = 0.01;
+    public static double bchain_handling_fee = 0.01;
 
     public DayMarketState(String date, int bchain_index, double gold_real, double gold_guess, double bchain_real, double bchain_guess) {
         this.date = date;
