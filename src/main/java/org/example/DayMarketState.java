@@ -38,4 +38,69 @@ public class DayMarketState {
     public DayMarketState getPrevious() {
         return previous;
     }
+
+    public static boolean isGuessGoldPriceGoingUp(DayMarketState dayMarketState) {
+        if (dayMarketState != null && dayMarketState.previous != null) {
+            if (dayMarketState.gold_guess> dayMarketState.previous.gold_real) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isGuessBchainPriceGoingUp(DayMarketState dayMarketState) {
+        if (dayMarketState != null && dayMarketState.previous != null) {
+            if (dayMarketState.bchain_guess> dayMarketState.previous.bchain_real) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isGuessGoldPriceGoingDown(DayMarketState dayMarketState) {
+        if (dayMarketState != null && dayMarketState.previous != null) {
+            if (dayMarketState.gold_guess< dayMarketState.previous.gold_real) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isGuessBchainPriceGoingDown(DayMarketState dayMarketState) {
+        if (dayMarketState != null && dayMarketState.previous != null) {
+            if (dayMarketState.bchain_guess< dayMarketState.previous.bchain_real) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isGuessGoldPriceGrowthOverThreshold(DayMarketState dayMarketState, double threshold) {
+        if (dayMarketState != null && dayMarketState.previous != null) {
+            if (dayMarketState.gold_guess > dayMarketState.previous.gold_real * (1 + threshold)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isGuessBchainPriceGrowthOverThreshold(DayMarketState dayMarketState, double threshold) {
+        if (dayMarketState != null && dayMarketState.previous != null) {
+            if (dayMarketState.bchain_guess > dayMarketState.previous.bchain_real * (1 + threshold)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isGuessGoldFallOverThreshold(DayMarketState dayMarketState, double threshold) {
+        if (dayMarketState != null && dayMarketState.previous != null) {
+            if (dayMarketState.gold_guess < dayMarketState.previous.gold_real * (1 - threshold)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isGuessBchainFallOverThreshold(DayMarketState dayMarketState, double threshold) {
+        if (dayMarketState != null && dayMarketState.previous != null) {
+            if (dayMarketState.bchain_guess < dayMarketState.previous.bchain_real * (1 - threshold)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -17,10 +17,20 @@ public class Main {
     public static void main(String[] args) {
         loadBchainData();
         loadGoldData();
-        printLinkedList(head);
-
+        //printLinkedList(head);
+        Trader trader1=new Trader(1000,0,0,0.05,0.1,0.05,0.1,head);
+        norifyDateToTrader(head.next,trader1);
     }
 
+
+    public static void norifyDateToTrader(DayMarketState head, Trader trader) {
+        DayMarketState current = head;
+        while (current != null) {
+            trader.notifyMarketState(current);
+            current = current.getNext();
+        }
+
+    }
     public static void printLinkedList(DayMarketState head) {
         DayMarketState current = head;
         while (current != null) {
