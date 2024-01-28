@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Opening price = yesterday real price
+ * Closing price = today real price
+ */
 public class DayMarketState {
     public String date = String.valueOf(UUID.randomUUID());
     public double gold_real = -1;
@@ -229,9 +233,9 @@ public class DayMarketState {
      * @param cash
      * @return
      */
-    public static boolean isGuessGoldBuyAvaible(DayMarketState today, double cash) {
+    public static double isGuessGoldBuyAvaible(DayMarketState today, double cash) {
         if (cash <= 0 || today == null) {
-            return false;
+            return -1;
         }
         DayMarketState yesterday = today.previous;
         while (yesterday != null) {
@@ -242,10 +246,20 @@ public class DayMarketState {
             }
         }
         if (yesterday != null) {
-            if ((gold_handling_fee) < ((1 - gold_handling_fee) * (today.gold_guess / yesterday.gold_real - 1))) {
-                return true;
-            }
+            return  cash*((gold_handling_fee) - ((1 - gold_handling_fee) * (today.gold_guess / yesterday.gold_real - 1))) ;
+
         }
-        return false;
+        return -1;
+    }
+    public static double isGuessBchainBuyAvaible(DayMarketState today, double cash) {
+        if (cash <= 0 || today == null) {
+            return -1;
+        }
+        DayMarketState yesterday = today.previous;
+        if (yesterday != null) {
+            return ((bchain_handling_fee) - ((1 - bchain_handling_fee) * (today.bchain_guess / yesterday.bchain_real - 1)));
+
+        }
+        return -1;
     }
 }
