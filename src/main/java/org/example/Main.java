@@ -17,9 +17,11 @@ public class Main {
     public static void main(String[] args) {
         loadBchainData();
         loadGoldData();
-        //printLinkedList(head);
+        printLinkedList(head);
         Trader trader1=new Trader(1000,0,0,0.05,0.1,0.05,0.1,head);
+        trader1.printAllGoods();
         norifyDateToTrader(head.next,trader1);
+        trader1.printAllGoods();
     }
 
 
@@ -53,11 +55,15 @@ public class Main {
             }
             if (iterator.hasNext()) {
                 Row nextRow = iterator.next();
-                System.out.println(nextRow.getCell(0).getCellType().name() + " " + nextRow.getRowNum());
+                //System.out.println(nextRow.getCell(0).getCellType().name() + " " + nextRow.getRowNum());
                 Cell dateCell = nextRow.getCell(0); //A
                 String date = dateCell.getStringCellValue();
 
-                DayMarketState current = new DayMarketState(date, nextRow.getRowNum(), -1, -1, -1, -1);
+                Cell bchainRealCell = nextRow.getCell(1); // Column B
+
+                double bchainReal = bchainRealCell.getNumericCellValue();
+
+                DayMarketState current = new DayMarketState(date, nextRow.getRowNum(), -1, -1, bchainReal, -1);
                 head = current;
                 tail = current;
             }
@@ -68,7 +74,7 @@ public class Main {
                 if (index >= bchain_break_point) {
                     break;
                 }
-                System.out.println(nextRow.getCell(0).getCellType().name() + " " + index);
+                //System.out.println(nextRow.getCell(0).getCellType().name() + " " + index);
                 Cell dateCell = nextRow.getCell(0); //A
                 String date = dateCell.getStringCellValue();
 
@@ -111,16 +117,22 @@ public class Main {
             if (iterator.hasNext()) {
                 Row nextRow = iterator.next();
                 int index = nextRow.getRowNum();
-                System.out.println(nextRow.getCell(0).getCellType().name() + " " + index);
+                //System.out.println(nextRow.getCell(0).getCellType().name() + " " + index);
                 Cell dateCell = nextRow.getCell(0); //A
                 String date = dateCell.getStringCellValue();
+
+                Cell goldRealCell = nextRow.getCell(1); // Column B
+                double goldReal = -1;
+                if (goldRealCell.getCellType() != CellType.ERROR) {
+                    goldReal = goldRealCell.getNumericCellValue();
+                }
 
                 // Search the linked list for a DayMarketState object with the same date
                 DayMarketState current = head;
                 while (current != null) {
                     if (current.date.equals(date)) {
                         // If such an object is found, set its gold_real and gold_guess fields
-                        current.gold_real = -1;
+                        current.gold_real = goldReal;
                         current.gold_guess = -1;
                         break;
                     }
@@ -134,7 +146,7 @@ public class Main {
                 if (index >= gold_break_point) {
                     break;
                 }
-                System.out.println(nextRow.getCell(0).getCellType().name() + " " + index);
+                //System.out.println(nextRow.getCell(0).getCellType().name() + " " + index);
                 Cell dateCell = nextRow.getCell(0); //A
                 String date = dateCell.getStringCellValue();
 
